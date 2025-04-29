@@ -584,6 +584,10 @@ html, body {
     object-fit: contain;
     clip-path: inset(0 2mm 0 0); /* haut droite bas gauche */
 }
+  body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
   </style>
 </head>
 <body>
@@ -603,7 +607,7 @@ html, body {
 
   <div class="card">
     <h2>Panier</h2>
-    <p>Total d'articles : <span id="total-articles">0</span></p>
+    
     <button onclick="window.location.href='panier.html'">Voir</button>
   </div>
 
@@ -613,10 +617,7 @@ html, body {
   </div>
 </div>
 
-<div class="orders">
-  <h2>Historique des commandes</h2>
-  <p>Aucune commande n’a été trouvée pour votre compte.</p>
-</div>
+
 
 <script>
   const utilisateur = JSON.parse(localStorage.getItem("utilisateurConnecte"));

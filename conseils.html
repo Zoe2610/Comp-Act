@@ -137,6 +137,39 @@
             font-weight: bold;
             text-decoration: underline;
             }
+            .carousel-container {
+              position: relative;
+              width: 100%;
+              height: 100%;
+            }
+
+            .carousel-video {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+
+            .carousel-btn {
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              background-color: rgba(255, 255, 255, 0.7);
+              border: none;
+              font-size: 2rem;
+              padding: 0.5rem;
+              cursor: pointer;
+              z-index: 2;
+              border-radius: 50%;
+            }
+
+            .carousel-btn.prev {
+              left: 10px;
+            }
+
+            .carousel-btn.next {
+              right: 10px;
+            }
+
 
       
         </style>
@@ -153,7 +186,12 @@
       
           <!-- Bloc 1 : Vidéo à gauche -->
           <div class="section">
-            <div class="video">Vidéo à venir – Comment bien composter</div>
+            <div style="flex: 1; display: flex; justify-content: center; align-items: center; background-color: #cce0c1;">
+              <video autoplay muted loop playsinline style="width: 80%; height: 300px; object-fit: cover; border-radius: 8px;">
+                <source src="composter.mp4" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+              </video>
+            </div>
             <div class="text">
               <h2>Comment composter ?</h2>
               <div class="toggle-text" id="text1">
@@ -174,7 +212,20 @@
       
           <!-- Bloc 2 : Vidéo à droite -->
           <div class="section reverse">
-            <div class="video">Vidéo à venir – Matières brunes vs matières vertes</div>
+            <div class="carousel-container">
+              <div class="carousel" id="video-carousel">
+                <video controls class="carousel-video" style="display: block;">
+                  <source src="matieres1.mp4" type="video/mp4">
+                  Votre navigateur ne supporte pas la vidéo.
+                </video>
+                <video controls class="carousel-video" style="display: none;">
+                  <source src="matieres2.mp4" type="video/mp4">
+                  Votre navigateur ne supporte pas la vidéo.
+                </video>
+              </div>
+              <button class="carousel-btn prev" onclick="changeVideo(-1)">❮</button>
+              <button class="carousel-btn next" onclick="changeVideo(1)">❯</button>
+            </div>
             <div class="text">
               <h2>Matières brunes et matières vertes</h2>
               <div class="toggle-text" id="text2">
@@ -216,6 +267,35 @@
             el.textContent = content.classList.contains('expanded') ? 'Réduire ▲' : '... Lire plus';
           }
         </script>
+        <script>
+          let currentVideo = 0;
+          const videos = document.querySelectorAll('#video-carousel .carousel-video');
+        
+          function showVideo(index) {
+            videos.forEach((video, i) => {
+              video.pause();
+              video.currentTime = 0;
+              video.muted = true; // mute toutes les vidéos
+              video.style.display = i === index ? 'block' : 'none';
+            });
+            videos[index].muted = false; // active le son uniquement sur la vidéo visible
+            videos[index].play();
+          }
+        
+          function changeVideo(direction) {
+            currentVideo = (currentVideo + direction + videos.length) % videos.length;
+            showVideo(currentVideo);
+          }
+        
+          // Défilement automatique toutes les 10 secondes
+          setInterval(() => changeVideo(1), 560000);
+        
+          // Initialisation au chargement
+          showVideo(currentVideo);
+        </script>
+        
+        
+        
  
       
 </body>

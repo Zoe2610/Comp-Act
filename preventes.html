@@ -280,6 +280,7 @@ const cartIcon = document.getElementById('open-cart');
       // Supprimer le clone après l'animation
       setTimeout(() => {
         document.body.removeChild(imgClone);
+        openCart();
       }, 1000);
     
         if (existingItem) {
@@ -289,7 +290,7 @@ const cartIcon = document.getElementById('open-cart');
         }
     
         localStorage.setItem('cart', JSON.stringify(cart));
-        openCart();
+        
       }
       
     
@@ -319,7 +320,7 @@ const cartIcon = document.getElementById('open-cart');
       // Event listeners pour ouvrir / fermer le panier
       openCartBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        openCart();
+        
       });
     
       closeCartBtn.addEventListener('click', closeCart);
