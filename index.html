@@ -499,6 +499,71 @@
     }
   });
 </script>
+<!-- Bandeau Cookies -->
+<div id="cookie-banner" class="cookie-banner">
+  <p>
+    Ce site utilise des cookies pour améliorer votre expérience. En poursuivant votre navigation, vous acceptez notre
+    <a href="#" id="privacy-policy-link">politique de confidentialité</a>.
+  </p>
+  <div id="privacy-policy-modal" class="modal">
+    <div class="modal-content">
+      <span id="close-modal" class="close">&times;</span>
+      <h2>Politique de Confidentialité</h2>
+      <p>
+        Nous utilisons des cookies pour le fonctionnement de notre site. Pour nous aider à améliorer et à personnaliser votre expérience, nous utilisons également un système de suivi facultatif à des fins d'analyse marketing et de personnalisation. Cela permet d'améliorer le contenu et les offres. Si vous acceptez, des cookies seront installés sur votre appareil et votre profil afin d'améliorer votre expérience. Si vous refusez, votre expérience sera moins personnalisée.
+      </p>
+    </div>
+  </div>
+  <div class="cookie-buttons">
+    <button id="accept-cookies">Accepter</button>
+    <button id="decline-cookies">Refuser</button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("privacy-policy-modal");
+    const openBtn = document.getElementById("privacy-policy-link");
+    const closeBtn = document.getElementById("close-modal");
+
+    openBtn.addEventListener("click", function (e) {
+      e.preventDefault();
+      modal.style.display = "flex"; // Affiche en mode flex (pour centrer)
+    });
+
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  });
+</script>
+<script>
+  const policyLink = document.getElementById("privacy-policy-link");
+  const overlay = document.getElementById("privacy-overlay");
+  const closeBtn = document.getElementById("close-privacy");
+
+  policyLink.addEventListener("click", function(e) {
+    e.preventDefault();
+    overlay.style.display = "flex";
+  });
+
+  closeBtn.addEventListener("click", function() {
+    overlay.style.display = "none";
+  });
+
+  // Clic à l'extérieur pour fermer aussi
+  overlay.addEventListener("click", function(e) {
+    if (e.target === overlay) {
+      overlay.style.display = "none";
+    }
+  });
+</script>
+
 
 </body>
 </html>
