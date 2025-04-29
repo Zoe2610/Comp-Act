@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Accueil - Compost d'Intérieur</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- 🛒 Fenêtre Panier (sidebar) -->
+
+
+<div id="cart-overlay" class="cart-overlay"></div>
+
+<script>
+  // 🎯 TOUT CE QUI CONCERNE LE PANIER EST ICI
+
+  document.addEventListener("DOMContentLoaded", function () {
+    updateCartSidebar();
+  });
+
+  document.getElementById('open-cart').addEventListener('click', function (e) {
+    e.preventDefault();
+    document.getElementById('cart-sidebar').classList.add('active');
+    document.getElementById('cart-overlay').classList.add('active');
+    updateCartSidebar();
+  });
+
+  document.getElementById('close-cart').addEventListener('click', () => {
+    document.getElementById('cart-sidebar').classList.remove('active');
+    document.getElementById('cart-overlay').classList.remove('active');
+  });
+
+  document.getElementById('cart-overlay').addEventListener('click', () => {
+    document.getElementById('cart-sidebar').classList.remove('active');
+    document.getElementById('cart-overlay').classList.remove('active');
+  });
+
+  function addToCart(name, price, image) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    const existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cart.push({ name, price, image, quantity: 1 });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartSidebar();
+    alert(`${name} a été ajouté au panier 🛒`);
+  }
+
+  function updateCartSidebar() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const container = document.getElementById('cart-content');
+    container.innerHTML = '';
+
+    if (cart.length === 0) {
+      container.innerHTML = `
+        <h3>Votre panier est vide !</h3>
+        <p>Ajoutez vos articles préférés à votre panier.</p>
+      `;
+      return;
+    }
+
+    const itemList = document.createElement('div');
+    itemList.classList.add('cart-items-mini');
+
+    let total = 0;
+
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+
+      const itemEl = document.createElement('div');
+      itemEl.className = 'cart-item-mini';
+      itemEl.innerHTML = `
+        <img src="${item.image}" alt="${item.name}" style="width:40px; height:auto; margin-right:10px;">
+        <span>${item.name} × ${item.quantity}</span>
+      `;
+      itemList.appendChild(itemEl);
+    });
+
+    container.appendChild(itemList);
+
+    container.innerHTML += `
+      <p><strong>Total : ${total.toFixed(2)} €</strong></p>
+      <button class="btn-shop" onclick="window.location.href='panier.html'">
+        Voir le panier complet
+      </button>
+    `;
+  }
+</script>
+
+<style>
+  .cart-item-mini {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+</style>
+
+<!-- 🧭 NAVBAR & MAIN PAGE -->
+
+<header class="navbar">
+  <div class="logo">
+    <a href="index.html">
+      <img src="logo.png" alt="Logo Comp'Act" class="logo-img" style="height: 70px;">
+    </a>
+  </div>
+  <nav class="main-nav">
+    <a href="index.html">Accueil</a>
+    <a href="preventes.html">Préventes</a>
+    <a href="conseils.html">Conseils</a>
+    <a href="contact.html">Contactez-nous</a>
+    <div class="dropdown">
+      
+        <a href="#" class="dropbtn">More ▼</a>
+        <div class="dropdown-content">
+          <a href="apropos.html">À propos</a>
+          <a href="avis.html">Avis</a>
+          <a href="donne.html">Donne ton Compost</a>
+        </div>
+      </div>
+  </nav>
+  <div class="nav-icons">
+    <a href="login.html" class="nav-btn">Se connecter</a>
+    <a href="panier.html" class="nav-btn">Mon panier</a>
+    
+  </div>
+</header>
+
+
+
+<main>
+  <h2>Comp'Act, LE composte d'intérieur</h2>
+  <p>Transformez vos déchets en engrais naturel, même en appartement !</p>
+
+  <!-- Galerie défilante -->
+  <section class="description-avec-carousel">
+    <div class="carousel-container">
+      <div class="carousel-slide">
+        <img src="composte1.png" alt="Photo 1">
+        <img src="composte2.png" alt="Photo 2">
+        <img src="composte3.png" alt="Photo 3">
+        <img src="composte4.png" alt="Photo 4">
+      </div>
+    </div>
+    <div id="popup" class="carousel-popup">
+      <img src="" alt="Agrandissement image">
+    </div>
+    <div class="texte-description">
+      <h2>🌿 Comp’Act, le compostage pour tous 🌿</h2>
+      <p>
+        Comp’Act propose une solution de compostage d’intérieur pensée pour les habitant·e·s en appartement,
+        soucieux·ses de réduire leur impact environnemental.
+      </p>
+      <p>
+        Grâce à la technique du compostage à chaud, les déchets se transforment rapidement, sans odeur,
+        et sans besoin de jardin.
+      </p>
+      <p>
+        Au-delà du produit, Comp’Act transmet une manière de composter : des outils, des conseils et un accompagnement
+        pour faire du compostage un geste simple, accessible et engagé.
+      </p>
+      <p>Avec Comp'Act, un seul acte a son impact.</p>
+    </div>
+  </section>
+
+  <h2>Rencontrez notre équipe</h2>
+  <p>Une équipe de jeunes entrepreneuses passionnées</p>
+  
+  <div class="team">
+      <!-- Noemia Addamo -->
+      <div class="team-member">
+          <img src="Noemia.png" alt="Noemia Addamo">
+          <h4>Noemia Addamo</h4>
+          <p class="poste">Responsable Production</p>
+          <p class="description">
+              Noemia supervise la production de notre compostage d’intérieur, assurant la qualité et la performance des processus. Grâce à son expertise technique, elle veille au bon déroulement de chaque étape.
+          </p>
+          
+          <a href="https://www.linkedin.com/in/noemia-addamo-827b4229a/" target="_blank">
+              <img src="linkedin.png" alt="LinkedIn" class="linkedin-icon">
+          </a>
+      </div>
+  
+      <!-- Valérie Custers -->
+      <div class="team-member">
+          <img src="Valérie.png" alt="Valérie Custers">
+          <h4>Valérie Custers</h4>
+          <p class="poste">Responsable Stratégie</p>
+          <p class="description">
+              Valérie supervise les opérations et garantit l’alignement de notre mission, tout en guidant l’équipe vers l’innovation durable. Elle incarne également le visage de notre entreprise et défend notre projet avec passion lors de ses interventions publiques.
+          </p>
+          <a href="https://www.linkedin.com/in/val%C3%A9rie-custers-988457298/" target="_blank">
+              <img src="linkedin.png" alt="LinkedIn" class="linkedin-icon">
+          </a>
+      </div>
+  
+      <!-- Manon Deffontaines -->
+      <div class="team-member">
+          <img src="Manon.png" alt="Manon Deffontaines">
+          <h4>Manon Deffontaines</h4>
+          <p class="poste">Responsable Finance</p>
+          <p class="description">
+              Manon pilote la gestion financière avec rigueur et précision. Elle veille à l’équilibre budgétaire du projet tout en accompagnant nos décisions stratégiques avec une vision claire et structurée.
+          </p>
+          <a href="https://www.linkedin.com/in/manon-deffontaines-17a675332/" target="_blank">
+              <img src="linkedin.png" alt="LinkedIn" class="linkedin-icon">
+          </a>
+          
+      </div>
+  
+      <!-- Emma Foulon -->
+      <div class="team-member">
+          <img src="Emma.png" alt="Emma Foulon">
+          <h4>Emma Foulon</h4>
+          <p class="poste">Responsable Marketing</p>
+          <p class="description">
+              Emma définit et met en œuvre notre stratégie marketing. Elle valorise notre projet à travers des campagnes, en veillant à toucher au mieux notre communauté et futurs utilisateurs.
+          </p>
+          <a href="https://www.linkedin.com/in/emma-foulon-/" target="_blank">
+              <img src="linkedin.png" alt="LinkedIn" class="linkedin-icon">
+          </a>
+          
+      </div>
+  
+      <!-- Marie-Alix Seynave -->
+      <div class="team-member">
+          <img src="Marial.png" alt="Marie-Alix Seynave">
+          <h4>Marie-Alix Seynave</h4>
+          <p class="poste">Responsable Production</p>
+          <p class="description">
+              Marie-Alix gère les opérations quotidiennes de production avec une approche centrée sur l’efficacité et l’innovation. Elle coordonne l'équipe pour garantir une production fluide, en intégrant des pratiques durables.
+          </p>
+          <a href="https://www.linkedin.com/in/marie-alix-seynave-5191832b7/" target="_blank">
+              <img src="linkedin.png" alt="LinkedIn" class="linkedin-icon">
+          </a>
+          
+      </div>
+  
+      <!-- Zoé Vandevelde -->
+      <div class="team-member">
+          <img src="Zoé.png" alt="Zoé Vandevelde">
+          <h4>Zoé Vandevelde</h4>
+          <p class="poste">Responsable Distribution & Communication</p>
+          <p class="description">
+              Zoé coordonne la distribution de notre produit tout en assurant sa visibilité. Elle met en place des actions de communication efficaces et veille à ce que notre message arrive au bon endroit, au bon moment.
+          </p>
+          <a href="https://www.linkedin.com/in/zoe-vandevelde/" target="_blank">
+              <img src="linkedin.png" alt="LinkedIn" class="linkedin-icon">
+          </a>
+          
+      </div>
+  </div>
+  
+</main>
+
+<footer>
+  <p>© 2025 by Comp'Act</p>
+</footer>
+
+<!-- 🍪 COOKIE BANNER -->
+<!-- ... tout ton code cookie inchangé ... -->
+
+<script>
+  // 🌿 Carousel
+  const slide = document.querySelector('.carousel-slide');
+  const images = document.querySelectorAll('.carousel-slide img');
+  let index = 0;
+
+  function showNextImage() {
+    index = (index + 1) % images.length;
+    slide.style.transform = `translateX(-${index * 100}%)`;
+  }
+
+  setInterval(showNextImage, 3000);
+
+  // 🌿 Agrandissement au clic
+  const popup = document.getElementById('popup');
+  const popupImg = popup.querySelector('img');
+
+  images.forEach(img => {
+    img.addEventListener('click', () => {
+      popupImg.src = img.src;
+      popup.classList.add('active');
+    });
+  });
+
+  popup.addEventListener('click', () => {
+    popup.classList.remove('active');
+    popupImg.src = '';
+  });
+
+  // 🍪 Gestion bannière cookies
+  document.addEventListener("DOMContentLoaded", function () {
+    const banner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("accept-cookies");
+    const declineBtn = document.getElementById("decline-cookies");
+
+    if (!localStorage.getItem("cookiesChoice")) {
+      banner.style.display = "flex";
+    }
+
+    acceptBtn.addEventListener("click", function () {
+      localStorage.setItem("cookiesChoice", "accepted");
+      banner.style.display = "none";
+    });
+
+    declineBtn.addEventListener("click", function () {
+      localStorage.setItem("cookiesChoice", "declined");
+      banner.style.display = "none";
+    });
+
+    const modal = document.getElementById("modal-overlay");
+    const openModal = document.getElementById("learn-more");
+    const closeModal = document.getElementById("close-modal");
+
+    openModal.addEventListener("click", function (e) {
+      e.preventDefault();
+      modal.classList.remove("hidden");
+    });
+
+    closeModal.addEventListener("click", function () {
+      modal.classList.add("hidden");
+    });
+
+    modal.addEventListener("click", function (e) {
+      if (e.target === modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  });
+</script>
+
+
+<!-- Panier Sidebar -->
+<div id="cart-sidebar" class="cart-sidebar">
+  <div class="cart-header">
+      <span>🛒 Votre Panier</span>
+      <button id="close-cart">✖</button>
+  </div>
+  <div class="cart-content">
+      <!-- Ici sera injecté le contenu du panier vide -->
+  </div>
+</div>
+
+<div id="cart-overlay" class="cart-overlay"></div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      const openCartBtn = document.getElementById('open-cart');
+      const cartSidebar = document.getElementById('cart-sidebar');
+      const cartOverlay = document.getElementById('cart-overlay');
+      const cartContent = document.querySelector('.cart-content');
+      const closeCartBtn = document.getElementById('close-cart');
+  
+      openCartBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
+          afficherPanier(cart);
+          cartSidebar.classList.add('active');
+          cartOverlay.classList.add('active');
+      });
+  
+      // Fermer la sidebar
+      closeCartBtn.addEventListener('click', function () {
+          cartSidebar.classList.remove('active');
+          cartOverlay.classList.remove('active');
+      });
+  
+      cartOverlay.addEventListener('click', function () {
+          cartSidebar.classList.remove('active');
+          cartOverlay.classList.remove('active');
+      });
+  
+      // Fonction d'affichage
+      function afficherPanier(cart) {
+          if (cart.length === 0) {
+              cartContent.innerHTML = `
+                  <h3>Votre panier est vide !</h3>
+                  <p>Ajoutez vos articles préférés à votre panier.</p>
+                  <button class="btn-shop" onclick="window.location.href='preventes.html'">Voir les produits</button>
+                  <div class="cart-suggestion">
+                      <h4>Vous aimerez peut-être aussi</h4>
+                      <img src="produit-suggere.png" alt="Produit suggéré" />
+                      <p class="nom-produit">Composteur Blanc</p>
+                      <p><span class="prix-promo">31,99 €</span></p>
+                  </div>
+              `;
+          } else {
+              let total = 0;
+              cart.forEach(item => {
+                  total += item.prix * item.quantite;
+              });
+  
+              cartContent.innerHTML = `
+                  <h3>Votre panier</h3>
+                  ${cart.map(item => `
+                      <div class="cart-item">
+                          <img src="${item.image}" alt="${item.nom}" style="width: 60px;">
+                          <div>
+                              <p class="nom-produit">${item.nom}</p>
+                              <p>${item.quantite} x ${item.prix.toFixed(2)} €</p>
+                          </div>
+                      </div>
+                  `).join('')}
+                  <hr>
+                  <p><strong>Total :</strong> ${total.toFixed(2)} €</p>
+                  <div style="display: flex; gap: 10px; flex-direction: column; margin-top: 15px;">
+                      <button class="btn-shop" onclick="window.location.href='preventes.html'">Continuer mes achats</button>
+                      <button class="btn-shop" style="background-color: #007bff;" onclick="window.location.href='panier.html'">Passer la commande</button>
+                  </div>
+              `;
+          }
+      }
+  });
+  </script>
+<!-- Panier Sidebar -->
+<div id="cart-sidebar" class="cart-sidebar">
+  <div class="cart-header">
+    <span>🛒 Votre Panier</span>
+    <button id="close-cart">✖</button>
+  </div>
+  <div class="cart-content">
+    <!-- Ici sera injecté le contenu du panier -->
+  </div>
+</div>
+
+<div id="cart-overlay" class="cart-overlay"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const openCartBtn = document.getElementById('open-cart');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartContent = document.querySelector('.cart-content');
+    const closeCartBtn = document.getElementById('close-cart');
+
+    openCartBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      afficherPanier(cart);
+      cartSidebar.classList.add('active');
+      cartOverlay.classList.add('active');
+    });
+
+    closeCartBtn.addEventListener('click', function () {
+      cartSidebar.classList.remove('active');
+      cartOverlay.classList.remove('active');
+    });
+
+    cartOverlay.addEventListener('click', function () {
+      cartSidebar.classList.remove('active');
+      cartOverlay.classList.remove('active');
+    });
+
+    function afficherPanier(cart) {
+      if (cart.length === 0) {
+        cartContent.innerHTML = `
+          <h3>Votre panier est vide !</h3>
+          <p>Ajoutez vos articles préférés à votre panier.</p>
+          <button class="btn-shop" onclick="window.location.href='preventes.html'">Voir les produits</button>
+          <div class="cart-suggestion">
+            <h4>Vous aimerez peut-être aussi</h4>
+            <img src="produit-suggere.png" alt="Produit suggéré" />
+            <p class="nom-produit">Composteur Blanc</p>
+            <p><span class="prix-promo">31,99 €</span></p>
+          </div>
+        `;
+      } else {
+        let total = 0;
+        cart.forEach(item => {
+          total += item.prix * item.quantite;
+        });
+
+        cartContent.innerHTML = `
+          <h3>Votre panier</h3>
+          ${cart.map(item => `
+            <div class="cart-item">
+              <img src="${item.image}" alt="${item.nom}" style="width: 60px;">
+              <div>
+                <p class="nom-produit">${item.nom}</p>
+                <p>${item.quantite} x ${item.prix.toFixed(2)} €</p>
+              </div>
+            </div>
+          `).join('')}
+          <hr>
+          <p><strong>Total :</strong> ${total.toFixed(2)} €</p>
+          <div style="display: flex; gap: 10px; flex-direction: column; margin-top: 15px;">
+            <button class="btn-shop" onclick="window.location.href='preventes.html'">Continuer mes achats</button>
+            <button class="btn-shop" style="background-color: #007bff;" onclick="window.location.href='panier.html'">Passer la commande</button>
+          </div>
+        `;
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

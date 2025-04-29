@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>More</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+          <a href="index.html">
+            <img src="logo.png" alt="Logo Comp'Act" class="logo-img" style="height: 70px;">
+          </a>
+        </div>
+        <nav class="main-nav">
+          <a href="index.html">Accueil</a>
+          <a href="preventes.html">Préventes</a>
+          <a href="conseils.html">Conseils</a>
+          <a href="contact.html">Contactez-nous</a>
+          <div class="dropdown">
+            
+              <a href="#" class="dropbtn">More ▼</a>
+              <div class="dropdown-content">
+                <a href="apropos.html">À propos</a>
+                <a href="avis.html">Avis</a>
+                <a href="donne.html">Donne ton Compost</a>
+              </div>
+            </div>
+        </nav>
+        <div class="nav-icons">
+          <a href="login.html" class="nav-btn">Se connecter</a>
+          <a href="panier.html" class="nav-btn">Mon panier</a>
+          
+        </div>
+      </header>
+      
+
+    <main>
+        <h2>More</h2>
+        <p>À venir... suivez-nous pour ne rien manquer des nouveautés 🌱</p>
+    </main>
+
+    <footer>
+        <p>© 2025 by Comp'Act</p>
+    </footer>
+       <!-- Panier HTML (à mettre dans chaque page) -->
+<div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <span>🛒 Votre Panier</span>
+        <button id="close-cart">✖</button>
+    </div>
+    <div class="cart-content">
+        <h3>Votre panier est vide !</h3>
+        <p>Ajoutez vos articles préférés à votre panier.</p>
+        <button class="btn-shop">Voir les produits</button>
+        <div class="cart-suggestion">
+            <h4>Vous aimerez peut-être aussi</h4>
+            <img src="produit-suggere.png" alt="Produit suggéré" />
+            <p class="nom-produit">Composteur Blanc</p>
+            <p><span class="prix-promo">31,99 €</span></p>
+        </div>
+    </div>
+</div>
+
+<div id="cart-overlay" class="cart-overlay"></div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const openCartBtn = document.getElementById('open-cart');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const cartOverlay = document.getElementById('cart-overlay');
+
+        if (openCartBtn) {
+            openCartBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                cartSidebar.classList.add('active');
+                cartOverlay.classList.add('active');
+            });
+        }
+
+        if (closeCartBtn) {
+            closeCartBtn.addEventListener('click', function () {
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+            });
+        }
+
+        if (cartOverlay) {
+            cartOverlay.addEventListener('click', function () {
+                cartSidebar.classList.remove('active');
+                cartOverlay.classList.remove('active');
+            });
+        }
+    });
+</script>
+</body>
+</html>

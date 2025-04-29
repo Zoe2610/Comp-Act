@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Préventes</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .navbar {
+      background-color: #333;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .cart-button {
+      position: relative;
+    }
+
+    .cart-button button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .badge {
+      background: red;
+      color: white;
+      border-radius: 50%;
+      padding: 2px 6px;
+      font-size: 12px;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      display: none;
+    }
+
+    .product {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .product img {
+      width: 250px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    .product button {
+      background-color: green;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 300px;
+      height: 100%;
+      background-color: white;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.3);
+      transition: right 0.3s;
+      padding: 20px;
+      z-index: 1001;
+      overflow-y: auto;
+    }
+
+    .cart-sidebar.active {
+      right: 0;
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+
+    .cart-overlay.active {
+      display: block;
+    }
+
+    .cart-content {
+      margin-top: 20px;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+
+    #close-cart {
+      background: none;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <h1>Mon Shop</h1>
+    <div class="cart-button">
+      <button id="btn-open-cart">🛒</button>
+      <span id="cart-count" class="badge">0</span>
+    </div>
+  </header>
+
+  <!-- PRODUIT -->
+  <main class="product">
+    <h2>Composteur 800L</h2>
+    <img src="https://via.placeholder.com/250x200.png?text=Composteur" alt="Composteur">
+    <p>Prix : 69,99 €</p>
+    <button id="btn-add-to-cart">Ajouter au panier</button>
+  </main>
+
+  <!-- PANIER SIDEBAR -->
+  <div id="cart-sidebar" class="cart-sidebar">
+    <div class="cart-header">
+      <h2>Votre Panier</h2>
+      <button id="btn-close-cart">✖</button>
+    </div>
+    <div id="cart-content" class="cart-content">
+      <!-- Les articles ajoutés apparaîtront ici -->
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div id="cart-overlay" class="cart-overlay"></div>
+
+  <!-- SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnOpenCart = document.getElementById('btn-open-cart');
+      const btnCloseCart = document.getElementById('btn-close-cart');
+      const btnAddToCart = document.getElementById('btn-add-to-cart');
+      const cartSidebar = document.getElementById('cart-sidebar');
+      const cartOverlay = document.getElementById('cart-overlay');
+      const cartContent = document.getElementById('cart-content');
+      const cartCount = document.getElementById('cart-count');
+
+      let panier = JSON.parse(localStorage.getItem('panier')) || [];
+
+      function updateCart() {
+        cartContent.innerHTML = '';
+        if (panier.length === 0) {
+          cartContent.innerHTML = '<p>Votre panier est vide.</p>';
+        } else {
+          let total = 0;
+          panier.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `
+              <strong>${item.nom}</strong><br>
+              Quantité: ${item.quantite}<br>
+              Prix: ${(item.prix * item.quantite).toFixed(2)} €
+            `;
+            cartContent.appendChild(div);
+            total += item.prix * item.quantite;
+          });
+          const totalDiv = document.createElement('div');
+          totalDiv.style.marginTop = '15px';
+          totalDiv.innerHTML = `<strong>Total : ${total.toFixed(2)} €</strong>`;
+          cartContent.appendChild(totalDiv);
+        }
+        updateBadge();
+      }
+
+      function updateBadge() {
+        const totalItems = panier.reduce((acc, item) => acc + item.quantite, 0);
+        cartCount.textContent = totalItems;
+        cartCount.style.display = totalItems > 0 ? 'inline-block' : 'none';
+      }
+
+      function openCart() {
+        cartSidebar.classList.add('active');
+        cartOverlay.classList.add('active');
+      }
+
+      function closeCart() {
+        cartSidebar.classList.remove('active');
+        cartOverlay.classList.remove('active');
+      }
+
+      btnAddToCart.addEventListener('click', () => {
+        const produit = { nom: "Composteur 800L", prix: 69.99, quantite: 1 };
+        const existant = panier.find(p => p.nom === produit.nom);
+        if (existant) {
+          existant.quantite += 1;
+        } else {
+          panier.push(produit);
+        }
+        localStorage.setItem('panier', JSON.stringify(panier));
+        updateCart();
+        openCart();
+      });
+
+      btnOpenCart.addEventListener('click', () => {
+        updateCart();
+        openCart();
+      });
+
+      btnCloseCart.addEventListener('click', closeCart);
+      cartOverlay.addEventListener('click', closeCart);
+
+      // Initialiser panier
+      updateCart();
+    });
+  </script>
+
+</body>
+</html>

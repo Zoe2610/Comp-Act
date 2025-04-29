@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Finaliser votre commande - Comp'Act</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="commande-container">
+    <h2>📦 Informations de Livraison</h2>
+
+    <form id="livraison-form" onsubmit="finaliserCommande(event)">
+      <input type="text" id="prenom" placeholder="Prénom" required />
+      <input type="text" id="nom" placeholder="Nom" required />
+      <input type="text" id="rue" placeholder="Rue" required />
+      <input type="text" id="numero" placeholder="Numéro de rue" required />
+      <input type="text" id="codepostal" placeholder="Code Postal" required />
+      <input type="text" id="localite" placeholder="Localité" required />
+      <input type="text" id="pays" value="Belgique" readonly />
+
+      <button type="submit">Confirmer la commande</button>
+    </form>
+
+    <div id="confirmation" style="display:none;">
+      <h3>✅ Merci pour votre commande !</h3>
+      <p>Nous vous recontacterons très vite 📬</p>
+    </div>
+  </main>
+
+  <script>
+    function finaliserCommande(e) {
+      e.preventDefault();
+      
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (cart.length === 0) {
+        alert("Votre panier est vide !");
+        return;
+      }
+
+      // Ici tu peux récupérer les données
+      const infos = {
+        prenom: document.getElementById('prenom').value,
+        nom: document.getElementById('nom').value,
+        rue: document.getElementById('rue').value,
+        numero: document.getElementById('numero').value,
+        codepostal: document.getElementById('codepostal').value,
+        localite: document.getElementById('localite').value,
+        pays: document.getElementById('pays').value
+      };
+
+      console.log("Commande confirmée ✅", infos);
+
+      // Vider le panier
+      localStorage.removeItem('cart');
+
+      // Afficher un message
+      document.getElementById('livraison-form').style.display = 'none';
+      document.getElementById('confirmation').style.display = 'block';
+    }
+  </script>
+
+  <style>
+    .commande-container {
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f3f4f6;
+      border-radius: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #2e7d32;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .navbar {
+    background-color: #2C6E49; /* Vert forêt */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* 🌿 Logo dans la navbar */
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2C6E49; /* Même couleur que la barre */
+}
+
+/* 🌿 Navigation principale */
+.main-nav {
+    display: flex;
+    gap: 30px;
+}
+
+/* 🌿 Liens de navigation */
+.main-nav a {
+    text-decoration: none;
+    color: #ffffff; /* Blanc */
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+}
+
+/* 🌿 Effet de soulignement sous les liens au survol */
+.main-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 2px;
+    background-color: #3D550C; /* Vert foncé */
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease-in-out;
+}
+
+.main-nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* 🌿 Icônes de la navbar */
+.nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: auto;
+}
+
+/* 🌿 Styles des icônes de navigation */
+.nav-icons img {
+    width: 24px;
+    height: 24px;
+    filter: invert(16%) sepia(28%) saturate(844%) hue-rotate(66deg) brightness(96%) contrast(92%);
+    transition: transform 0.2s ease;
+}
+
+.nav-icons img:hover {
+    transform: scale(1.1);
+}
+#header-bar {
+            display: flex;
+            justify-content: space-between; /* Espacement entre les éléments */
+            align-items: center;
+            background-color: #1668e3; /* Couleur de fond de la barre */
+            color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre sous la barre */
+        }
+
+        /* Logo */
+        #header-bar .logo {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        /* Conteneur du titre */
+        #header-bar .title {
+            flex: 1;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        /* Liens de navigation */
+        #header-bar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        #header-bar .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        #header-bar .nav-links a:hover {
+            color: #f1f1f1;
+        }
+
+        /* Pour un look général sur le reste de la page */
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Pour le contenu sous la barre */
+        .content {
+            padding: 20px;
+        }
+        .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* s'assurer qu'elle passe au-dessus du reste */
+    background-color: #2C6E49; /* sinon elle peut être transparente */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* petit effet d'ombre */
+}
+body {
+    margin: 0;
+    padding: 0;
+    padding-top: 130px !important ; /* Ajuste cette valeur selon la hauteur exacte de ta navbar */
+}
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* pour qu'elle reste au-dessus des autres éléments */
+}
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* permet d'aller à la ligne si trop d'éléments */
+    padding: 20px 0px;
+  }
+  .nav-icons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .nav-icons {
+      margin-top: 10px;
+      align-self: flex-end;
+    }
+  }
+  .nav-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* espace entre les icônes */
+    margin-right: 30px; /* décalage vers la gauche */
+}
+.nav-icons a {
+    margin-left: 15px;
+    text-decoration: none;
+    color: #333; /* ou une autre couleur */
+    font-weight: 500;
+}
+.btn-outline {
+    padding: 6px 16px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    background-color: white;
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.btn-outline:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 20px;
+    display: none;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    z-index: 10000;
+    font-size: 14px;
+}
+
+.cookie-banner a {
+    color: #0af;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cookie-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+.cookie-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#accept-cookies {
+    background-color: #28a745;
+    color: white;
+}
+
+#decline-cookies {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cookie-details {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+.hidden {
+    display: none;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11000;
+}
+
+.modal {
+    background-color: white;
+    color: #333;
+    padding: 20px 25px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+.modal button {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal button:hover {
+    background-color: #0056b3;
+}
+
+.hidden {
+    display: none;
+}
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Noir transparent */
+    color: white;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    z-index: 10000;
+    flex-wrap: wrap;
+  }
+  
+  .cookie-buttons button {
+    margin: 0 5px;
+    padding: 8px 15px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .cookie-buttons button:hover {
+    background-color: #ddd;
+  }
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* fond noir transparent */
+    color: white;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    z-index: 9999;
+    flex-wrap: wrap;
+  }
+  
+  .cookie-banner a {
+    color: #4fc3f7;
+    text-decoration: underline;
+  }
+  
+  .cookie-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .cookie-buttons button {
+    padding: 8px 16px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cookie-buttons button:hover {
+    background-color: #ccc;
+  }
+  .hidden {
+    display: none;
+  }  
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 20px;
+    display: none;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    z-index: 10000;
+    font-size: 14px;
+}
+
+.cookie-banner a {
+    color: #0af;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.cookie-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+.cookie-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#accept-cookies {
+    background-color: #28a745;
+    color: white;
+}
+
+#decline-cookies {
+    background-color: #dc3545;
+    color: white;
+}
+
+.cookie-details {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #ccc;
+}
+
+.hidden {
+    display: none;
+}
+.quantite {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+  }    
+  .navbar {
+    position: fixed; /* ou sticky si tu veux qu'elle suive le scroll */
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  .logo {
+    margin-left: 10px; /* décale de 20px vers la droite */
+  }
+  .nav-btn {
+    background-color: white;
+    color: #2c5c3f; /* une teinte verte foncée pour rappeler ton thème */
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    display: inline-block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .nav-btn:hover {
+    background-color: #2c5c3f;
+    color: white;
+  }
+/* Dropdown Menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropbtn {
+    color: white;
+    text-decoration: none;
+    padding: 14px 16px;
+    font-weight: bold;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: #2c5c3f; /* ton vert foncé */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .dropdown-content a:last-child {
+    border-bottom: none;
+  }
+  
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown:hover .dropbtn {
+    color: #2c5c3f;
+  }
+  .logo-img {
+    height: 50px;
+    object-fit: contain;
+    clip-path: inset(0 2mm 0 0); /* haut droite bas gauche */
+}
+  </style>
+  <header class="navbar">
+    <div class="logo">
+      <a href="index.html">
+        <img src="logo.png" alt="Logo Comp'Act" class="logo-img" style="height: 70px;">
+      </a>
+    </div>
+  
+    <nav class="main-nav">
+      <a href="index.html">Accueil</a>
+      <a href="preventes.html">Préventes</a>
+      <a href="conseils.html">Conseils</a>
+      <a href="contact.html">Contactez-nous</a>
+      <a href="#">More</a>
+    </nav>
+  
+    <div class="nav-icons">
+      <a href="login.html" class="btn-outline">Se connecter</a>
+      <a href="#" id="open-cart" class="btn-outline">Panier</a>
+    </div>
+  </header>
+  
+</body>
+</html>
